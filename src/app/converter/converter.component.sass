@@ -1,0 +1,65 @@
+.Converter
+  display: flex
+  flex-direction: column
+  align-items: center
+  padding: 24px
+
+  h1
+    text-align: center
+
+  .Error
+    margin: 8px
+    border: 1px solid red
+    border-radius: 8px
+    padding: 8px 24px
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+
+    p
+      margin-bottom: 0px
+
+
+
+  .ExchangeRates
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 100%
+    margin-top: 16px
+
+    .Currency
+      display: flex
+      justify-content: space-between
+      overflow-x: hidden
+
+      .Form
+        display: flex
+        flex-direction: column
+        width: 100%
+
+        mat-form-field
+          width: 100%
+          overflow-x: hidden
+
+          &:not(:last-of-type)
+            margin-right: 8px
+
+    .Equal
+      font-size: 24px
+      width: 64px
+      padding: 0px 2px
+      display: flex
+      justify-content: center
+      color: #3f51b5
+
+
+    @media screen and (max-width: 800px)
+      flex-direction: column
+
+
+
+
+
+

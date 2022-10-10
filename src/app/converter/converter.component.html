@@ -1,0 +1,76 @@
+<article class="Converter">
+  <h1>Select currency and amount</h1>
+
+  <div class="Error" *ngIf="error">
+    <p>Sorry, something went wrong. Try again!</p>
+  </div>
+
+  <section class="ExchangeRates">
+    <section class="Currency Currency_first">
+      <form class="Form Form_1" [formGroup]="formCurrency_1">
+        <mat-form-field appearance="fill" class="Select">
+          <mat-label>Currency</mat-label>
+          <mat-select
+            (selectionChange)="handleChange_1()"
+            formControlName="currency"
+            matInput
+            type="number"
+            min="0"
+          >
+            <mat-option *ngFor="let currency of currencies" [value]="currency">
+              {{ currency }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="Amount">
+          <mat-label>Amount</mat-label>
+          <input
+            (input)="handleChange_1()"
+            formControlName="amount"
+            matInput
+            type="number"
+            min="0"
+            value="1"
+          >
+        </mat-form-field>
+      </form>
+    </section>
+
+    <div class="Equal">
+     <p>=</p>
+    </div>
+
+    <section class="Currency Currency_second">
+      <form  class="Form Form_2" [formGroup]="formCurrency_2">
+        <mat-form-field appearance="fill" class="Select">
+          <mat-label>Currency</mat-label>
+          <mat-select
+            (selectionChange)="handleChange_2()"
+            formControlName="currency"
+            matInput
+            type="number"
+            min="0"
+          >
+            <mat-option *ngFor="let currency of currencies" [value]="currency">
+              {{ currency }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="Amount">
+          <mat-label>Amount</mat-label>
+          <input
+            (input)="handleChange_2()"
+            formControlName="amount"
+            matInput
+            type="number"
+            min="0"
+            value="1"
+          >
+        </mat-form-field>
+      </form>
+    </section>
+  </section>
+
+</article>
