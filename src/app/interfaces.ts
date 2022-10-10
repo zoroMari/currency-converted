@@ -1,10 +1,16 @@
 import { FormGroup } from "@angular/forms";
 
-export interface IArguments {
-  form_to?: FormGroup;
-  amount_from: number;
-  cur_from: string;
-  cur_to: string;
+export interface IConverterArgs {
+  formTo: FormGroup;
+  amountFrom: number;
+  curFrom: string;
+  curTo: string;
+}
+
+export interface IFetchingArgs {
+  amountFrom: number;
+  curFrom: string;
+  curTo: string;
 }
 
 export interface IApiResponse {
