@@ -1,5 +1,7 @@
+import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { ConverterService } from '../converter.service';
 import { currencies_available } from '../currencies_available';
 import { IArguments } from '../interfaces';
@@ -9,7 +11,7 @@ import { IArguments } from '../interfaces';
   templateUrl: './converter.component.html',
   styleUrls: ['./converter.component.sass']
 })
-export class ConverterComponent implements OnInit {
+export class ConverterComponent implements OnInit, OnDestroy {
   private _cur_avail = currencies_available;
   public currencies = [this._cur_avail.usd, this._cur_avail.eur, this._cur_avail.uah];
   public formCurrency_1!: FormGroup;
@@ -20,6 +22,9 @@ export class ConverterComponent implements OnInit {
   private _amount_1: number;
   private _cur_2: string;
   private _amount_2: number;
+
+  private _sub_1: Subscription;
+  private _sub_2: Subscription;
 
   constructor(private converterService: ConverterService ) { }
 
@@ -36,7 +41,7 @@ export class ConverterComponent implements OnInit {
       currency: new FormControl(this._cur_avail.uah, Validators.required)
     })
 
-    this.formCurrency_1.valueChanges.subscribe(
+    this._sub_1 = this.formCurrency_1.valueChanges.subscribe(
       newValue => {
         this._cur_1 = this.formCurrency_1.get('currency')?.value;
         this._amount_1 = +this.formCurrency_1.get('amount')?.value;
@@ -51,7 +56,7 @@ export class ConverterComponent implements OnInit {
       }
     )
 
-    this.formCurrency_2.valueChanges.subscribe(
+    this._sub_2 = this.formCurrency_2.valueChanges.subscribe(
       newValue => {
         this._cur_1 = this.formCurrency_1.get('currency')?.value;
         this._cur_2 = this.formCurrency_2.get('currency')?.value;
@@ -82,6 +87,11 @@ export class ConverterComponent implements OnInit {
           this.error = true;
         }
     );
+  }
+
+  ngOnDestroy(): void {
+    this._sub_1.unsubscribe();
+    this._sub_2.unsubscribe();
   }
 }
 
