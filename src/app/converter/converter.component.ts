@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConverterService } from '../converter.service';
 import { currencies_available } from '../currencies_available';
+import { IArguments } from '../interfaces';
 
 @Component({
   selector: 'app-converter',
@@ -35,50 +36,52 @@ export class ConverterComponent implements OnInit {
       currency: new FormControl(this._cur_avail.uah, Validators.required)
     })
 
-    this._cur_1 = this.formCurrency_1.get('currency')?.value;
-    this._amount_1 = +this.formCurrency_1.get('amount')?.value;
-    this._cur_2 = this.formCurrency_2.get('currency')?.value;
-    this._amount_2 = +this.formCurrency_2.get('amount')?.value;
-  }
+    this.formCurrency_1.valueChanges.subscribe(
+      newValue => {
+        this._cur_1 = this.formCurrency_1.get('currency')?.value;
+        this._amount_1 = +this.formCurrency_1.get('amount')?.value;
+        this._cur_2 = this.formCurrency_2.get('currency')?.value;
 
-  public handleChange_1() {
-    this._cur_1 = this.formCurrency_1.get('currency')?.value;
-    this._amount_1 = +this.formCurrency_1.get('amount')?.value;
-    this._cur_2 = this.formCurrency_2.get('currency')?.value;
-
-    this._converCurrency(this.formCurrency_2, this._cur_1, this._amount_1, this._cur_2)
-  }
-
-  public handleChange_2() {
-    this._cur_1 = this.formCurrency_1.get('currency')?.value;
-    this._cur_2 = this.formCurrency_2.get('currency')?.value;
-    this._amount_2 = +this.formCurrency_2.get('amount')?.value;
-
-    this._converCurrency(this.formCurrency_1, this._cur_2, this._amount_2, this._cur_1)
-  }
-
-  private _converCurrency(to_form: FormGroup, from_cur: string, from_amount: number, to_cur: string) {
-    if(from_amount === 0) return;
-
-    this.converterService.fetchExchangeRate(
-      {
-        amount_from: from_amount,
-        cur_from: from_cur,
-        cur_to: to_cur,
+        this._convertCurrency({
+          form_to: this.formCurrency_2,
+          cur_from: this._cur_1,
+          amount_from: this._amount_1,
+          cur_to: this._cur_2,
+        })
       }
     )
+
+    this.formCurrency_2.valueChanges.subscribe(
+      newValue => {
+        this._cur_1 = this.formCurrency_1.get('currency')?.value;
+        this._cur_2 = this.formCurrency_2.get('currency')?.value;
+        this._amount_2 = +this.formCurrency_2.get('amount')?.value;
+
+        this._convertCurrency({
+          form_to: this.formCurrency_1,
+          cur_from: this._cur_2,
+          amount_from: this._amount_2,
+          cur_to: this._cur_1,
+        })
+      }
+    )
+  }
+
+  private _convertCurrency(args: IArguments) {
+    const { form_to, cur_from, amount_from, cur_to } = args;
+    if(amount_from === 0) return;
+
+    this.converterService.fetchExchangeRate({ cur_from, amount_from, cur_to })
       .subscribe(
         amount => {
           this.error = false;
           const newAmount: number = +(amount.result).toFixed(3);
-          to_form.patchValue({ 'amount': newAmount });
+          form_to.patchValue({ 'amount': newAmount }, { emitEvent: false });
         },
         error => {
           this.error = true;
         }
     );
   }
-
-
-
 }
+

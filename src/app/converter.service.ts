@@ -1,16 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-
-interface IApiResponse {
-  result: number;
-}
-
-interface IArguments {
-  amount_from: number;
-  cur_from: string;
-  cur_to: string;
-}
+import { IArguments, IApiResponse } from "./interfaces";
 
 @Injectable({ providedIn: 'root' })
 export class ConverterService {
