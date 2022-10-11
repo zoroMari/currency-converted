@@ -92,6 +92,12 @@ export class ConverterComponent implements OnInit, OnDestroy {
     );
   }
 
+  public disableCurrency(currency: string, formForCheck: FormGroup) {
+    const curForCheck = formForCheck.get('currency')?.value;
+    if (currency === curForCheck) return true;
+    return false;
+  }
+
   ngOnDestroy(): void {
     this._subFirst.unsubscribe();
     this._subSecond.unsubscribe();

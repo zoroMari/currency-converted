@@ -16,7 +16,11 @@
             type="number"
             min="0"
           >
-            <mat-option *ngFor="let currency of currencies" [value]="currency">
+            <mat-option
+              [disabled]="disableCurrency(currency, formCurrencySecond)"
+              *ngFor="let currency of currencies"
+              [value]="currency"
+            >
               {{ currency }}
             </mat-option>
           </mat-select>
@@ -49,7 +53,11 @@
             type="number"
             min="0"
           >
-            <mat-option *ngFor="let currency of currencies" [value]="currency">
+            <mat-option
+              [disabled]="disableCurrency(currency, formCurrencyFirst)"
+              *ngFor="let currency of currencies"
+              [value]="currency"
+            >
               {{ currency }}
             </mat-option>
           </mat-select>
