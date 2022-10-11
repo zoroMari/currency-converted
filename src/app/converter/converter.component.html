@@ -1,5 +1,5 @@
 <article class="Converter">
-  <h1>Select currency and amount</h1>
+  <h1>Choose currency and amount</h1>
 
   <div class="Error" *ngIf="error">
     <p>Sorry, something went wrong. Try again!</p>
@@ -7,11 +7,10 @@
 
   <section class="ExchangeRates">
     <section class="Currency Currency_first">
-      <form class="Form Form_1" [formGroup]="formCurrency_1">
+      <form class="Form Form_1" [formGroup]="formCurrencyFirst">
         <mat-form-field appearance="fill" class="Select">
           <mat-label>Currency</mat-label>
           <mat-select
-            (selectionChange)="handleChange_1()"
             formControlName="currency"
             matInput
             type="number"
@@ -26,7 +25,6 @@
         <mat-form-field appearance="fill" class="Amount">
           <mat-label>Amount</mat-label>
           <input
-            (input)="handleChange_1()"
             formControlName="amount"
             matInput
             type="number"
@@ -42,11 +40,10 @@
     </div>
 
     <section class="Currency Currency_second">
-      <form  class="Form Form_2" [formGroup]="formCurrency_2">
+      <form  class="Form Form_2" [formGroup]="formCurrencySecond">
         <mat-form-field appearance="fill" class="Select">
           <mat-label>Currency</mat-label>
           <mat-select
-            (selectionChange)="handleChange_2()"
             formControlName="currency"
             matInput
             type="number"
@@ -61,7 +58,6 @@
         <mat-form-field appearance="fill" class="Amount">
           <mat-label>Amount</mat-label>
           <input
-            (input)="handleChange_2()"
             formControlName="amount"
             matInput
             type="number"

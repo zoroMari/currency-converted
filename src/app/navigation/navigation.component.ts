@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { ConverterService } from "../converter.service";
-import { currencies_available } from "../currencies_available";
+import { currenciesAvailable } from "../currencies_available";
 
 @Component({
   selector: 'app-navigation',
@@ -9,21 +9,26 @@ import { currencies_available } from "../currencies_available";
   styleUrls: ['./navigation.component.sass'],
 })
 export class NavigationComponent implements OnInit, OnDestroy {
-  public currencies = currencies_available;
+  public currencies = currenciesAvailable;
   public uah: number = 1;
   public eur: number;
   public usd: number;
-  private _sub_1: Subscription;
-  private _sub_2: Subscription;
+  private _subFirst: Subscription;
+  private _subSecond: Subscription;
 
   constructor(private converterService: ConverterService) {}
 
   ngOnInit(): void {
-    this._sub_1 = this.converterService.fetchExchangeRate(
+    this._fetchEur();
+    this._fetchUsd();
+  }
+
+  private _fetchEur() {
+    this._subFirst = this.converterService.fetchExchangeRate(
       {
-        amount_from: 1,
-        cur_from: this.currencies.uah,
-        cur_to: this.currencies.eur,
+        amountFrom: 1,
+        curFrom: this.currencies.uah,
+        curTo: this.currencies.eur,
       }
     )
       .subscribe(
@@ -31,12 +36,14 @@ export class NavigationComponent implements OnInit, OnDestroy {
           this.eur = +(amount.result).toFixed(3);
         }
     )
+  }
 
-    this._sub_2 = this.converterService.fetchExchangeRate(
+  private _fetchUsd() {
+    this._subSecond = this.converterService.fetchExchangeRate(
       {
-        amount_from: 1,
-        cur_from: this.currencies.uah,
-        cur_to: this.currencies.usd,
+        amountFrom: 1,
+        curFrom: this.currencies.uah,
+        curTo: this.currencies.usd,
       }
     )
       .subscribe(
@@ -47,8 +54,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._sub_1.unsubscribe();
-    this._sub_2.unsubscribe();
+    this._subFirst.unsubscribe();
+    this._subSecond.unsubscribe();
   }
 
 }
